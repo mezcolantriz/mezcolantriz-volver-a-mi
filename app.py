@@ -1,7 +1,7 @@
 import streamlit as st
 import random
-import os
 from datetime import datetime
+import os
 import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
 
 # Configuración de la página
@@ -68,7 +68,6 @@ opcion = st.sidebar.selectbox("🔹 Elige tu espacio", menu[bloque_actual])
 choice = opcion
 
 # Sección: Diario emocional
-# Eliminado import incorrecto
 if choice == "Diario emocional":
     st.header("📓 Diario emocional")
     st.markdown("Escribe con honestidad, este espacio es solo tuyo. 🪷")
@@ -78,12 +77,15 @@ if choice == "Diario emocional":
     if st.button("💌 Guardar entrada"):
         texto = f"Sentí: {sentimiento}\nLo sentí en: {cuerpo}\nOrgullo: {orgullo}"
         streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('diario', `{texto}`);", key="guardar_diario")
+        os.makedirs("diario", exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        with open(f"diario/{timestamp}.txt", "w", encoding="utf-8") as f:
+            f.write(texto)
         st.success("Entrada guardada localmente 🌱. Solo tú puedes verla desde este navegador.")
-        if st.button("📂 Ver mi última entrada guardada"):
-            diario_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('diario');", key="ver_diario")
-            if diario_guardado and isinstance(diario_guardado, str):
-                st.info(f"📝 Última entrada guardada:\n\n{diario_guardado}")
-
+    if st.button("📂 Ver mi última entrada guardada"):
+        diario_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('diario');", key="ver_diario")
+        if diario_guardado and isinstance(diario_guardado, str):
+            st.info(f"📝 Última entrada guardada:\n\n{diario_guardado}")
 
 # Sección: Check-in diario
 elif choice == "Check-in diario":
@@ -93,12 +95,15 @@ elif choice == "Check-in diario":
     if st.button("📔 Registrar check-in"):
         texto = f"Estado: {estado}\nNecesito: {necesidad}"
         streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('checkin', `{texto}`);", key="guardar_checkin")
+        os.makedirs("checkin", exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        with open(f"checkin/{timestamp}.txt", "w", encoding="utf-8") as f:
+            f.write(texto)
         st.success("Check-in guardado localmente 🌺. Solo tú puedes verlo desde este navegador.")
-        if st.button("📂 Ver mi último check-in"):
-            checkin_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('checkin');", key="ver_checkin")
-            if checkin_guardado and isinstance(checkin_guardado, str):
-                st.info(f"🧠 Último check-in guardado:\n\n{checkin_guardado}")
-
+    if st.button("📂 Ver mi último check-in"):
+        checkin_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('checkin');", key="ver_checkin")
+        if checkin_guardado and isinstance(checkin_guardado, str):
+            st.info(f"🧠 Último check-in guardado:\n\n{checkin_guardado}")
 
 
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
