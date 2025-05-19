@@ -4,8 +4,10 @@ import os
 from datetime import datetime
 import matplotlib.pyplot as plt
 from collections import Counter
-import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
+import streamlit as st
+import streamlit_js_eval # Nuevo: componente para acceder a localStorage
 
+# Configuración de la página
 st.set_page_config(page_title="Volver a mí", page_icon="🌼", layout="centered")
 
 # Estilo CSS aún más oscuro y con contraste mejorado
@@ -69,7 +71,7 @@ opcion = st.sidebar.selectbox("🔹 Elige tu espacio", menu[bloque_actual])
 choice = opcion
 
 # Sección: Diario emocional
-from streamlit_js_eval import get_geolocation, get_cookie, get_local_storage
+# Eliminado import incorrecto
 if choice == "Diario emocional":
     st.header("📓 Diario emocional")
     st.markdown("Escribe con honestidad, este espacio es solo tuyo. 🪷")
@@ -79,11 +81,12 @@ if choice == "Diario emocional":
     if st.button("💌 Guardar entrada"):
         texto = f"Sentí: {sentimiento}\nLo sentí en: {cuerpo}\nOrgullo: {orgullo}"
         streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('diario', `{texto}`);", key="guardar_diario")
-        diario_guardado = get_local_storage("diario")
-        if diario_guardado:
-            st.info(f"📝 Última entrada guardada:\n\n{diario_guardado}")
+        st.success("Entrada guardada localmente 🌱. Solo tú puedes verla desde este navegador.")
+        if st.button("📂 Ver mi última entrada guardada"):
+            diario_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('diario');", key="ver_diario")
+            if diario_guardado and isinstance(diario_guardado, str):
+                st.info(f"📝 Última entrada guardada:\n\n{diario_guardado}")
 
-            st.success("Entrada guardada localmente 🌱. Solo tú puedes verla desde este navegador.")
 
 # Sección: Check-in diario
 elif choice == "Check-in diario":
@@ -93,12 +96,11 @@ elif choice == "Check-in diario":
     if st.button("📔 Registrar check-in"):
         texto = f"Estado: {estado}\nNecesito: {necesidad}"
         streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('checkin', `{texto}`);", key="guardar_checkin")
-        checkin_guardado = get_local_storage("checkin")
-        if checkin_guardado:
-            st.info(f"🧠 Último check-in guardado:\n\n{checkin_guardado}")
-
-            st.success("Check-in guardado localmente 🌺. Solo tú puedes verlo desde este navegador.")
-
+        st.success("Check-in guardado localmente 🌺. Solo tú puedes verlo desde este navegador.")
+        if st.button("📂 Ver mi último check-in"):
+            checkin_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('checkin');", key="ver_checkin")
+            if checkin_guardado and isinstance(checkin_guardado, str):
+                st.info(f"🧠 Último check-in guardado:\n\n{checkin_guardado}")
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 elif choice == "Ritual de mañana":
     st.header("🧘‍♀️ Ritual de mañana")
