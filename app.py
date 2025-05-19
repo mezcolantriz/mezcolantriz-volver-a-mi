@@ -1,11 +1,7 @@
 import streamlit as st
 import random
-import os
 from datetime import datetime
-import matplotlib.pyplot as plt
-from collections import Counter
-import streamlit as st
-import streamlit_js_eval # Nuevo: componente para acceder a localStorage
+import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
 
 # Configuración de la página
 st.set_page_config(page_title="Volver a mí", page_icon="🌼", layout="centered")
@@ -101,6 +97,9 @@ elif choice == "Check-in diario":
             checkin_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('checkin');", key="ver_checkin")
             if checkin_guardado and isinstance(checkin_guardado, str):
                 st.info(f"🧠 Último check-in guardado:\n\n{checkin_guardado}")
+
+
+
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 elif choice == "Ritual de mañana":
     st.header("🧘‍♀️ Ritual de mañana")
