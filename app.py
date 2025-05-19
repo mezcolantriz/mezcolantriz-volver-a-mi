@@ -61,7 +61,7 @@ menu = {
     "🌅 Mañana": ["Ritual de mañana", "Check-in diario"],
     "🌤️ Mediodía": ["Ejercicio de presencia", "Retos"],
     "🌙 Noche": ["Diario emocional", "Carta de amor"],
-    "📚 Historial y análisis": ["Mis registros"]
+    "📚 Historial y análisis": ["Mis registros", "Mis cartas de amor" ]
 }
 
 bloques = list(menu.keys())
@@ -89,7 +89,7 @@ if choice == "Diario emocional":
         if diario_guardado and isinstance(diario_guardado, str):
             st.info(f"📝 Última entrada guardada:\n\n{diario_guardado}")
 
-# Sección: Check-in diario
+
 # Sección: Check-in diario
 elif choice == "Check-in diario":
     st.header("🧠 Check-in diario")
@@ -150,16 +150,33 @@ elif choice == "Carta de amor":
             f.write(carta)
         st.success("Carta guardada 💖. Puedes volver a leerla cuando lo necesites.")
 
-elif choice == "Mis cartas de amor":
+# Sección: Mis cartas de amor
+if choice == "Mis cartas de amor":
     st.header("📂 Mis cartas de amor")
     if os.path.exists("cartas"):
         cartas = sorted(os.listdir("cartas"), reverse=True)
         for c in cartas:
             with open(f"cartas/{c}", "r", encoding="utf-8") as f:
-                st.markdown(f"""---\n📅 **{c.replace('.txt','')}**\n
-> {f.read()}""")
+                contenido = f.read()
+            st.markdown(f"""---
+📅 **{c.replace('.txt','')}**
+
+> {contenido}""")
+            col1, col2 = st.columns([1, 1])
+            with col1:
+                if st.button(f"📝 Editar carta: {c}"):
+                    nueva_carta = st.text_area("Edita tu carta:", value=contenido, key=f"editar_{c}")
+                    if st.button(f"💾 Guardar cambios {c}", key=f"guardar_{c}"):
+                        with open(f"cartas/{c}", "w", encoding="utf-8") as f:
+                            f.write(nueva_carta)
+                        st.success("Cambios guardados ✨")
+            with col2:
+                if st.button(f"🗑️ Borrar carta: {c}", key=f"borrar_{c}"):
+                    os.remove(f"cartas/{c}")
+                    st.warning("Carta eliminada 💔")
     else:
         st.info("Aún no has escrito ninguna carta. Ve al apartado 'Carta de amor a ti misma' 💌")
+
 
 elif choice == "Ejercicio de presencia":
     st.header("🌬️ Ejercicio de presencia - 5-4-3-2-1")
