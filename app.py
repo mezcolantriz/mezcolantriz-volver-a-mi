@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 import matplotlib.pyplot as plt
 from collections import Counter
+import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
 
 # Configuración de la página
 st.set_page_config(page_title="Volver a mí", page_icon="🌼", layout="centered")
@@ -60,18 +61,13 @@ menu = {
     "🌅 Mañana": ["Ritual de mañana", "Check-in diario"],
     "🌤️ Mediodía": ["Ejercicio de presencia", "Retos"],
     "🌙 Noche": ["Diario emocional", "Carta de amor"],
-    "📚 Historial y análisis": ["Mis registros", "Mis cartas de amor"]
+    "📚 Historial y análisis": ["Mis registros"]
 }
 
 bloques = list(menu.keys())
 bloque_actual = st.sidebar.selectbox("✨ Elige tu momento del día", bloques)
 opcion = st.sidebar.selectbox("🔹 Elige tu espacio", menu[bloque_actual])
 choice = opcion
-
-# Crear carpetas necesarias si no existen
-os.makedirs("cartas", exist_ok=True)
-os.makedirs("diario", exist_ok=True)
-os.makedirs("checkin", exist_ok=True)
 
 # Sección: Diario emocional
 if choice == "Diario emocional":
@@ -81,10 +77,9 @@ if choice == "Diario emocional":
     cuerpo = st.text_input("🌿 ¿Dónde lo sentiste en tu cuerpo?")
     orgullo = st.text_input("🌟 ¿Qué hiciste que te hizo sentir orgullosa?")
     if st.button("💌 Guardar entrada"):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        with open(f"diario/{timestamp}.txt", "w", encoding="utf-8") as f:
-            f.write(f"Sentí: {sentimiento}\nLo sentí en: {cuerpo}\nOrgullo: {orgullo}")
-        st.success("Entrada guardada 🌱. Estás cultivando conciencia y amor propio.")
+        texto = f"Sentí: {sentimiento}\nLo sentí en: {cuerpo}\nOrgullo: {orgullo}"
+        streamlit_js_eval.js_eval(js=f"localStorage.setItem('diario', `{texto}`);", key="guardar_diario")
+        st.success("Entrada guardada localmente 🌱. Solo tú puedes verla desde este navegador.")
 
 # Sección: Check-in diario
 elif choice == "Check-in diario":
@@ -92,11 +87,9 @@ elif choice == "Check-in diario":
     estado = st.selectbox("📌 ¿Cómo te sientes hoy?", ["Triste", "En calma", "Ansiosa", "Motivada", "Cansada", "Otra"])
     necesidad = st.selectbox("🪞 ¿Qué necesitas hoy?", ["Amor", "Descanso", "Motivación", "Silencio", "Contacto", "Otro"])
     if st.button("📔 Registrar check-in"):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        with open(f"checkin/{timestamp}.txt", "w", encoding="utf-8") as f:
-            f.write(f"Estado: {estado}\nNecesito: {necesidad}")
-        st.success(f"Has reconocido que te sientes {estado.lower()} y necesitas {necesidad.lower()}. Gracias por escucharte 🌺")
-
+        texto = f"Estado: {estado}\nNecesito: {necesidad}"
+        streamlit_js_eval.js_eval(js=f"localStorage.setItem('checkin', `{texto}`);", key="guardar_checkin")
+        st.success("Check-in guardado localmente 🌺. Solo tú puedes verlo desde este navegador.")
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 elif choice == "Ritual de mañana":
     st.header("🧘‍♀️ Ritual de mañana")
