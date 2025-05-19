@@ -270,3 +270,26 @@ elif choice == "Mis registros":
             st.pyplot(fig2)
     else:
         st.info("Aún no hay check-ins guardados 🕊️")
+
+    st.subheader("🧹 Reiniciar registros")
+    opcion_borrar = st.selectbox("¿Qué deseas borrar?", ["Nada", "Solo diario emocional", "Solo check-ins", "Solo cartas", "Todo"])
+    if st.button("🗑️ Borrar selección"):
+        import shutil
+        if opcion_borrar == "Solo diario emocional" and os.path.exists("diario"):
+            for archivo in os.listdir("diario"):
+                os.remove(os.path.join("diario", archivo))
+            st.warning("Entradas del diario eliminadas ✏️")
+        elif opcion_borrar == "Solo check-ins" and os.path.exists("checkin"):
+            for archivo in os.listdir("checkin"):
+                os.remove(os.path.join("checkin", archivo))
+            st.warning("Check-ins eliminados 📌")
+        elif opcion_borrar == "Solo cartas" and os.path.exists("cartas"):
+            for archivo in os.listdir("cartas"):
+                os.remove(os.path.join("cartas", archivo))
+            st.warning("Cartas eliminadas 💌")
+        elif opcion_borrar == "Todo":
+            for carpeta in ["diario", "checkin", "cartas"]:
+                if os.path.exists(carpeta):
+                    shutil.rmtree(carpeta)
+            st.error("Todo ha sido eliminado 💣")
+
