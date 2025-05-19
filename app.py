@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
 
+
 # Configuración de la página
 st.set_page_config(page_title="Volver a mí", page_icon="🌼", layout="centered")
 
@@ -78,7 +79,7 @@ if choice == "Diario emocional":
     orgullo = st.text_input("🌟 ¿Qué hiciste que te hizo sentir orgullosa?")
     if st.button("💌 Guardar entrada"):
         texto = f"Sentí: {sentimiento}\nLo sentí en: {cuerpo}\nOrgullo: {orgullo}"
-        streamlit_js_eval.js_eval(js=f"localStorage.setItem('diario', `{texto}`);", key="guardar_diario")
+        streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('diario', `{texto}`);", key="guardar_diario")
         st.success("Entrada guardada localmente 🌱. Solo tú puedes verla desde este navegador.")
 
 # Sección: Check-in diario
@@ -88,8 +89,9 @@ elif choice == "Check-in diario":
     necesidad = st.selectbox("🪞 ¿Qué necesitas hoy?", ["Amor", "Descanso", "Motivación", "Silencio", "Contacto", "Otro"])
     if st.button("📔 Registrar check-in"):
         texto = f"Estado: {estado}\nNecesito: {necesidad}"
-        streamlit_js_eval.js_eval(js=f"localStorage.setItem('checkin', `{texto}`);", key="guardar_checkin")
+        streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('checkin', `{texto}`);", key="guardar_checkin")
         st.success("Check-in guardado localmente 🌺. Solo tú puedes verlo desde este navegador.")
+
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 elif choice == "Ritual de mañana":
     st.header("🧘‍♀️ Ritual de mañana")
