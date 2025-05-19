@@ -62,13 +62,15 @@ menu = {
     "📚 Historial y análisis": ["Mis registros", "Mis cartas de amor"]
 }
 
-# Crear selección desplegable ordenada por bloques (sin markdown link roto)
 bloques = list(menu.keys())
 bloque_actual = st.sidebar.selectbox("✨ Elige tu momento del día", bloques)
 opcion = st.sidebar.selectbox("🔹 Elige tu espacio", menu[bloque_actual])
-
-# Selección activa
 choice = opcion
+
+# Crear carpetas necesarias si no existen
+os.makedirs("cartas", exist_ok=True)
+os.makedirs("diario", exist_ok=True)
+os.makedirs("checkin", exist_ok=True)
 
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 if choice == "Ritual de mañana":
