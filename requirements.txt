@@ -1,4 +1,5 @@
 matplotlib
 streamlit
 streamlit-js-eval
-
+matplotlib.pyplot
+ .

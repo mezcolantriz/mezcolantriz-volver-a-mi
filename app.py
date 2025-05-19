@@ -1,9 +1,10 @@
 import streamlit as st
 import random
-from datetime import datetime
 import os
+from datetime import datetime
+import matplotlib.pyplot as plt
 from collections import Counter
-import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
+import streamlit_js_eval   # Nuevo: componente para acceder a localStorage
 
 # Configuración de la página
 st.set_page_config(page_title="Volver a mí", page_icon="🌼", layout="centered")
