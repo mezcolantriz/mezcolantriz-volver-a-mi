@@ -39,13 +39,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Nombre de usuario
+# Nombre de usuario editable
 nombre_input = st.text_input("¿Cómo te llamas?", value=st.session_state.get("nombre", "Maria Antonieta"))
 if nombre_input:
     st.session_state.nombre = nombre_input
 else:
     st.stop()
-
 
 # Título y bienvenida
 st.title("🌼 Volver a mí")
@@ -84,7 +83,7 @@ if choice == "Diario emocional":
     if st.button("💌 Guardar entrada"):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         with open(f"diario/{timestamp}.txt", "w", encoding="utf-8") as f:
-            f.write(f"Sentí: {sentimiento}\\nLo sentí en: {cuerpo}\\nOrgullo: {orgullo}")
+            f.write(f"Sentí: {sentimiento}\nLo sentí en: {cuerpo}\nOrgullo: {orgullo}")
         st.success("Entrada guardada 🌱. Estás cultivando conciencia y amor propio.")
 
 # Sección: Check-in diario
@@ -95,7 +94,7 @@ elif choice == "Check-in diario":
     if st.button("📔 Registrar check-in"):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         with open(f"checkin/{timestamp}.txt", "w", encoding="utf-8") as f:
-            f.write(f"Estado: {estado}\\nNecesito: {necesidad}")
+            f.write(f"Estado: {estado}\nNecesito: {necesidad}")
         st.success(f"Has reconocido que te sientes {estado.lower()} y necesitas {necesidad.lower()}. Gracias por escucharte 🌺")
 
 
