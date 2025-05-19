@@ -40,10 +40,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Nombre de usuario
-if "nombre" not in st.session_state:
-    st.session_state.nombre = st.text_input("¿Cómo te llamas?", value="Maria Antonieta")
-    if not st.session_state.nombre:
-        st.stop()
+nombre_input = st.text_input("¿Cómo te llamas?", value=st.session_state.get("nombre", "Maria Antonieta"))
+if nombre_input:
+    st.session_state.nombre = nombre_input
+else:
+    st.stop()
+
 
 # Título y bienvenida
 st.title("🌼 Volver a mí")
@@ -72,8 +74,33 @@ os.makedirs("cartas", exist_ok=True)
 os.makedirs("diario", exist_ok=True)
 os.makedirs("checkin", exist_ok=True)
 
+# Sección: Diario emocional
+if choice == "Diario emocional":
+    st.header("📓 Diario emocional")
+    st.markdown("Escribe con honestidad, este espacio es solo tuyo. 🪷")
+    sentimiento = st.text_input("💭 ¿Qué sentiste hoy?")
+    cuerpo = st.text_input("🌿 ¿Dónde lo sentiste en tu cuerpo?")
+    orgullo = st.text_input("🌟 ¿Qué hiciste que te hizo sentir orgullosa?")
+    if st.button("💌 Guardar entrada"):
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        with open(f"diario/{timestamp}.txt", "w", encoding="utf-8") as f:
+            f.write(f"Sentí: {sentimiento}\\nLo sentí en: {cuerpo}\\nOrgullo: {orgullo}")
+        st.success("Entrada guardada 🌱. Estás cultivando conciencia y amor propio.")
+
+# Sección: Check-in diario
+elif choice == "Check-in diario":
+    st.header("🧠 Check-in diario")
+    estado = st.selectbox("📌 ¿Cómo te sientes hoy?", ["Triste", "En calma", "Ansiosa", "Motivada", "Cansada", "Otra"])
+    necesidad = st.selectbox("🪞 ¿Qué necesitas hoy?", ["Amor", "Descanso", "Motivación", "Silencio", "Contacto", "Otro"])
+    if st.button("📔 Registrar check-in"):
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        with open(f"checkin/{timestamp}.txt", "w", encoding="utf-8") as f:
+            f.write(f"Estado: {estado}\\nNecesito: {necesidad}")
+        st.success(f"Has reconocido que te sientes {estado.lower()} y necesitas {necesidad.lower()}. Gracias por escucharte 🌺")
+
+
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
-if choice == "Ritual de mañana":
+elif choice == "Ritual de mañana":
     st.header("🧘‍♀️ Ritual de mañana")
     st.markdown("""
     - Coloca una mano en el pecho y otra en el abdomen.
@@ -127,12 +154,6 @@ elif choice == "Ejercicio de presencia":
     if st.button("🕊️ Finalizar ejercicio"):
         st.success("Estás aquí, estás a salvo. Bien hecho ✨")
 
-elif choice == "Check-in diario":
-    st.header("🧠 Check-in diario")
-    estado = st.selectbox("📌 ¿Cómo te sientes hoy?", ["Triste", "En calma", "Ansiosa", "Motivada", "Cansada", "Otra"])
-    necesidad = st.selectbox("🪞 ¿Qué necesitas hoy?", ["Amor", "Descanso", "Motivación", "Silencio", "Contacto", "Otro"])
-    if st.button("📔 Registrar check-in"):
-        st.success(f"Has reconocido que te sientes {estado.lower()} y necesitas {necesidad.lower()}. Gracias por escucharte 🪷")
 
 elif choice == "Retos":
     st.header("🌱 Microdesafíos de independencia")
