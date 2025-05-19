@@ -81,10 +81,9 @@ if choice == "Diario emocional":
         streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('diario', `{texto}`);", key="guardar_diario")
         diario_guardado = get_local_storage("diario")
         if diario_guardado:
-            st.info(f"📝 Última entrada guardada:
+            st.info(f"📝 Última entrada guardada:\n\n{diario_guardado}")
 
-{diario_guardado}")
-        st.success("Entrada guardada localmente 🌱. Solo tú puedes verla desde este navegador.")
+            st.success("Entrada guardada localmente 🌱. Solo tú puedes verla desde este navegador.")
 
 # Sección: Check-in diario
 elif choice == "Check-in diario":
@@ -96,10 +95,9 @@ elif choice == "Check-in diario":
         streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('checkin', `{texto}`);", key="guardar_checkin")
         checkin_guardado = get_local_storage("checkin")
         if checkin_guardado:
-            st.info(f"🧠 Último check-in guardado:
+            st.info(f"🧠 Último check-in guardado:\n\n{checkin_guardado}")
 
-{checkin_guardado}")
-        st.success("Check-in guardado localmente 🌺. Solo tú puedes verlo desde este navegador.")
+            st.success("Check-in guardado localmente 🌺. Solo tú puedes verlo desde este navegador.")
 
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 elif choice == "Ritual de mañana":
