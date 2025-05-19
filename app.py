@@ -2,6 +2,7 @@ import streamlit as st
 import random
 from datetime import datetime
 import os
+import counter
 import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
 
 # Configuración de la página
