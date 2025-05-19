@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import os
 from datetime import datetime
 import streamlit_js_eval  # Nuevo: componente para acceder a localStorage
 
