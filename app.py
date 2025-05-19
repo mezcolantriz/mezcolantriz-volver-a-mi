@@ -90,10 +90,22 @@ if choice == "Diario emocional":
             st.info(f"📝 Última entrada guardada:\n\n{diario_guardado}")
 
 # Sección: Check-in diario
+# Sección: Check-in diario
 elif choice == "Check-in diario":
     st.header("🧠 Check-in diario")
-    estado = st.selectbox("📌 ¿Cómo te sientes hoy?", ["Triste", "En calma", "Ansiosa", "Motivada", "Cansada", "Otra"])
-    necesidad = st.selectbox("🪞 ¿Qué necesitas hoy?", ["Amor", "Descanso", "Motivación", "Silencio", "Contacto", "Otro"])
+    estado = st.selectbox("📌 ¿Cómo te sientes hoy?", [
+        "Triste", "En calma", "Ansiosa", "Motivada", "Cansada", "Frustrada", "Sola",
+        "Agradecida", "Energética", "Vacía", "Confundida", "Segura", "Ilusionada",
+        "Desconectada", "Serena", "Irritable", "En paz", "Emocionada", "Melancólica",
+        "Otra"])
+    if estado == "Otra":
+        estado = st.text_input("Escríbelo con tus palabras:")
+    necesidad = st.selectbox("🪞 ¿Qué necesitas hoy?", [
+        "Amor", "Descanso", "Motivación", "Silencio", "Contacto", "Claridad", "Movimiento",
+        "Autocompasión", "Inspiración", "Apoyo", "Libertad", "Llorar", "Ternura",
+        "Espacio", "Alegría", "Rutina", "Cuidado físico", "Aceptar una emoción", "Otro"])
+    if necesidad == "Otro":
+        necesidad = st.text_input("Exprésalo tú misma:")
     if st.button("📔 Registrar check-in"):
         texto = f"Estado: {estado}\nNecesito: {necesidad}"
         streamlit_js_eval.streamlit_js_eval(js=f"localStorage.setItem('checkin', `{texto}`);", key="guardar_checkin")
@@ -106,7 +118,6 @@ elif choice == "Check-in diario":
         checkin_guardado = streamlit_js_eval.streamlit_js_eval(js="localStorage.getItem('checkin');", key="ver_checkin")
         if checkin_guardado and isinstance(checkin_guardado, str):
             st.info(f"🧠 Último check-in guardado:\n\n{checkin_guardado}")
-
 
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 elif choice == "Ritual de mañana":
