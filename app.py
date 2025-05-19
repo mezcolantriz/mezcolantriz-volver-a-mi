@@ -97,7 +97,6 @@ elif choice == "Check-in diario":
             f.write(f"Estado: {estado}\nNecesito: {necesidad}")
         st.success(f"Has reconocido que te sientes {estado.lower()} y necesitas {necesidad.lower()}. Gracias por escucharte 🌺")
 
-
 # A partir de aquí, siguen las condiciones para ejecutar la sección correspondiente
 elif choice == "Ritual de mañana":
     st.header("🧘‍♀️ Ritual de mañana")
